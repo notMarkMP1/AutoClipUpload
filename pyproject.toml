@@ -1,0 +1,14 @@
+[project]
+name = "autoclipuploadgui"
+version = "0.1.0"
+description = ""
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = [
+  "flet==0.25.2",
+  "google_api_python_client==2.156.0",
+  "httplib2==0.22.0",
+  "oauth2client==4.1.3"
+]
+
+
