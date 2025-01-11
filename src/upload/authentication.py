@@ -43,3 +43,7 @@ class Authentication:
             if creds.valid:
                 credentials_json = creds.to_json()
                 page.client_storage.set("client_creds", credentials_json)
+                return True
+
+        return False
+

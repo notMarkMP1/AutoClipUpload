@@ -12,19 +12,34 @@ class Configuration(ft.View):
 
         def save_action(e, action):
             if action == "id":
-                self.page.client_storage.set("client_id", client_id_textbox.value)
+                self.page.client_storage.set("client_id", client_id_textbox.value.strip())
+                action_text.color = ft.Colors.WHITE
+                action_text.value = "Client ID saved."
             elif action == "secret":
-                self.page.client_storage.set("client_secret", client_secret_textbox.value)
+                self.page.client_storage.set("client_secret", client_secret_textbox.value.strip())
+                action_text.color = ft.Colors.WHITE
+                action_text.value = "Client Secret saved."
+            self.page.update()
 
         def get_auth(e):
-            Authentication.get_authenticated_service(self.page)
+            request = Authentication.get_authenticated_service(self.page)
+            if request:
+                action_text.color = ft.Colors.GREEN
+                action_text.value = "Credentials have been saved."
+            else:
+                action_text.color = ft.Colors.RED
+                action_text.value = "Credentials could not be validated. Please ensure provided credentials are correct."
+            self.page.update()
+
 
         def delete_credentials(e):
             self.page.client_storage.remove("client_id")
             self.page.client_storage.remove("client_secret")
-            self.page.client_storage.remove("client_credentials")
+            self.page.client_storage.remove("client_creds")
             client_id_textbox.value = ""
             client_secret_textbox.value = ""
+            action_text.color = ft.Colors.RED_500
+            action_text.value = "Credentials have been removed."
             self.page.update()
 
         self.padding = 20
@@ -85,7 +100,7 @@ class Configuration(ft.View):
             on_click=delete_credentials
         )
 
-
+        action_text = ft.Text()
 
         self.controls = [
             appbar,
@@ -94,7 +109,8 @@ class Configuration(ft.View):
                     [
                         ft.Row([client_id_help, client_id_textbox, save_button_id], alignment=ft.MainAxisAlignment.CENTER),
                         ft.Row([client_id_help, client_secret_textbox, save_button_secret], alignment=ft.MainAxisAlignment.CENTER),
-                        ft.Row([oauth_signin_button, delete_credentials_button], alignment=ft.MainAxisAlignment.CENTER)
+                        ft.Row([oauth_signin_button, delete_credentials_button], alignment=ft.MainAxisAlignment.CENTER),
+                        ft.Row([action_text], alignment=ft.MainAxisAlignment.CENTER)
                     ],
                     spacing=20,
                 ),
