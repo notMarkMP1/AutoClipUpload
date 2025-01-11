@@ -12,7 +12,7 @@ class Home(ft.View):
     def on_select_files_click(self, e):
         self.page.overlay.append(ft.SnackBar(content=ft.Text("Select files clicked"), open=True, duration=1000))
         self.page.update()
-    def __init__(self):
+    def __init__(self, page: ft.Page):
         super().__init__()
         self.horizontal_alignment = ft.CrossAxisAlignment.CENTER
         self.vertical_alignment = ft.MainAxisAlignment.CENTER

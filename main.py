@@ -9,13 +9,12 @@ class Main:
         self.page.on_route_change = self.route_change
         self.page.on_view_pop = self.view_pop
         self.page.theme = ft.Theme(page_transitions=ft.PageTransitionsTheme(windows=ft.PageTransitionTheme.FADE_UPWARDS))
-        self.page.views.clear()
         self.page.go("/")
 
     def route_change(self, rt):
         if rt.route in ScreenSelection.Screens:
             new_view = ScreenSelection.Screens[rt.route]
-            self.page.views.append(new_view())
+            self.page.views.append(new_view(self.page))
         self.page.update()
 
 

@@ -4,7 +4,7 @@ from google.auth.transport.requests import Request
 from google_auth_oauthlib.flow import InstalledAppFlow
 
 class Authentication:
-    YOUTUBE_UPLOAD_SCOPE = "https://www.googleapis.com/auth/youtube.upload"
+    YOUTUBE_UPLOAD_SCOPE = ["https://www.googleapis.com/auth/youtube.upload"]
     YOUTUBE_API_SERVICE_NAME = "youtube"
     YOUTUBE_API_VERSION = "v3"
     USER_CREDENTIALS = {
@@ -27,7 +27,6 @@ class Authentication:
         Authentication.USER_CREDENTIALS["web"]["client_secret"] = client_secret
 
         creds = None
-
         if client_creds is not None:
             client_creds = json.loads(client_creds)
             creds = Credentials.from_authorized_user_info(client_creds, Authentication.YOUTUBE_UPLOAD_SCOPE)
