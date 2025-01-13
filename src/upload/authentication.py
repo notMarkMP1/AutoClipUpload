@@ -29,7 +29,14 @@ class Authentication:
         creds = None
         if client_creds is not None:
             client_creds = json.loads(client_creds)
-            creds = Credentials.from_authorized_user_info(client_creds, Authentication.YOUTUBE_UPLOAD_SCOPE)
+            try:
+                creds = Credentials.from_authorized_user_info(client_creds, Authentication.YOUTUBE_UPLOAD_SCOPE)
+            except ValueError:
+                return False
+            if creds.valid:
+                return True
+
+
 
         if not creds or not creds.valid:
             if creds and creds.expired and creds.refresh_token:
@@ -43,6 +50,9 @@ class Authentication:
             if creds.valid:
                 credentials_json = creds.to_json()
                 page.client_storage.set("client_creds", credentials_json)
+                print(credentials_json)
+                if creds.refresh_token is None:
+                    return False
                 return True
 
         return False

@@ -1,4 +1,6 @@
 import flet as ft
+from datetime import datetime
+import json
 from src.upload.authentication import Authentication
 
 
@@ -7,10 +9,19 @@ class Configuration(ft.View):
         super().__init__()
         self.page = page
 
+        def highlight_link(e):
+            e.control.style.color = ft.Colors.PURPLE
+            e.control.update()
+
+        def unhighlight_link(e):
+            e.control.style.color = ft.Colors.BLUE
+            e.control.update()
+
         def show_help(e):
             self.page.open(help_dialog)
 
         def save_action(e, action):
+            action_text.spans = None
             if action == "id":
                 self.page.client_storage.set("client_id", client_id_textbox.value.strip())
                 action_text.color = ft.Colors.WHITE
@@ -24,11 +35,16 @@ class Configuration(ft.View):
         def get_auth(e):
             request = Authentication.get_authenticated_service(self.page)
             if request:
+                client_creds = json.loads(self.page.client_storage.get("client_creds"))
+                timestamp = datetime.strptime(client_creds['expiry'], "%Y-%m-%dT%H:%M:%S.%fZ")
+                readable_timestamp = timestamp.strftime("%Y-%m-%d %H:%M:%S")
                 action_text.color = ft.Colors.GREEN
-                action_text.value = "Credentials have been saved."
+                action_text.spans = None
+                action_text.value = f"Credentials are valid. Expires: {readable_timestamp}"
             else:
                 action_text.color = ft.Colors.RED
-                action_text.value = "Credentials could not be validated. Please ensure provided credentials are correct."
+                action_text.spans = None
+                action_text.value = "Credentials could not be validated. Please clear credentials and try again."
             self.page.update()
 
 
@@ -39,7 +55,13 @@ class Configuration(ft.View):
             client_id_textbox.value = ""
             client_secret_textbox.value = ""
             action_text.color = ft.Colors.RED_500
-            action_text.value = "Credentials have been removed."
+            action_text.value = None
+            action_text.spans = [ft.TextSpan("Credentials have been removed. Also visit "),
+                 ft.TextSpan("this link",
+                    ft.TextStyle(decoration=ft.TextDecoration.UNDERLINE, color=ft.Colors.BLUE),
+                    url="https://myaccount.google.com/connections?filters=3,4&hl=en",
+                    on_enter=highlight_link,
+                    on_exit=unhighlight_link), ft.TextSpan(" and delete 'AutoClipUpload'.")]
             self.page.update()
 
         self.padding = 20
@@ -101,6 +123,9 @@ class Configuration(ft.View):
         )
 
         action_text = ft.Text()
+
+        if self.page.client_storage.get("client_creds") is not None:
+            get_auth(None)
 
         self.controls = [
             appbar,
