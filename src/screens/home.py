@@ -9,9 +9,15 @@ class Home(ft.View):
         self.page.go(RouteNames.CONFIGURATION_ROUTE)
         self.page.update()
 
-    def on_select_files_click(self, e):
-        self.page.overlay.append(ft.SnackBar(content=ft.Text("Select files clicked"), open=True, duration=1000))
+    def on_select_files(self, e):
+        self.page.overlay.append(self.pick_files_dialog)
         self.page.update()
+
+        self.pick_files_dialog.pick_files(allowed_extensions=["mp4", "mkv", "mov", "avi"])
+
+    def file_selection_action(self, e: ft.FilePickerResultEvent):
+        print(e.files)
+
     def __init__(self, page: ft.Page):
         super().__init__()
         self.horizontal_alignment = ft.CrossAxisAlignment.CENTER
@@ -40,10 +46,12 @@ class Home(ft.View):
             color="white",
         )
 
+        self.pick_files_dialog = ft.FilePicker(on_result=self.file_selection_action)
+
         select_files_button = ft.ElevatedButton(
             text="Select Files",
             icon=ft.Icons.UPLOAD_FILE,
-            on_click=self.on_select_files_click,
+            on_click=self.on_select_files,
             bgcolor="green",
             color="white",
         )

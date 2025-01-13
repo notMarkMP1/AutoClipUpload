@@ -47,7 +47,6 @@ class Configuration(ft.View):
                 action_text.value = "Credentials could not be validated. Please clear credentials and try again."
             self.page.update()
 
-
         def delete_credentials(e):
             self.page.client_storage.remove("client_id")
             self.page.client_storage.remove("client_secret")
@@ -57,11 +56,11 @@ class Configuration(ft.View):
             action_text.color = ft.Colors.RED_500
             action_text.value = None
             action_text.spans = [ft.TextSpan("Credentials have been removed. Also visit "),
-                 ft.TextSpan("this link",
-                    ft.TextStyle(decoration=ft.TextDecoration.UNDERLINE, color=ft.Colors.BLUE),
-                    url="https://myaccount.google.com/connections?filters=3,4&hl=en",
-                    on_enter=highlight_link,
-                    on_exit=unhighlight_link), ft.TextSpan(" and delete 'AutoClipUpload'.")]
+                                 ft.TextSpan("this link",
+                                             ft.TextStyle(decoration=ft.TextDecoration.UNDERLINE, color=ft.Colors.BLUE),
+                                             url="https://myaccount.google.com/connections?filters=3,4&hl=en",
+                                             on_enter=highlight_link,
+                                             on_exit=unhighlight_link), ft.TextSpan(" and delete 'AutoClipUpload'.")]
             self.page.update()
 
         self.padding = 20
@@ -98,12 +97,12 @@ class Configuration(ft.View):
 
         save_button_id = ft.ElevatedButton(
             text="Save",
-            on_click= lambda e: save_action(e, "id")
+            on_click=lambda e: save_action(e, "id")
         )
 
         save_button_secret = ft.ElevatedButton(
             text="Save",
-            on_click= lambda e: save_action(e, "secret")
+            on_click=lambda e: save_action(e, "secret")
         )
 
         oauth_signin_button = ft.ElevatedButton(

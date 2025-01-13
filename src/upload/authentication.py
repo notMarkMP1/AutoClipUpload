@@ -3,6 +3,7 @@ from google.oauth2.credentials import Credentials
 from google.auth.transport.requests import Request
 from google_auth_oauthlib.flow import InstalledAppFlow
 
+
 class Authentication:
     YOUTUBE_UPLOAD_SCOPE = ["https://www.googleapis.com/auth/youtube.upload"]
     YOUTUBE_API_SERVICE_NAME = "youtube"
@@ -36,13 +37,12 @@ class Authentication:
             if creds.valid:
                 return True
 
-
-
         if not creds or not creds.valid:
             if creds and creds.expired and creds.refresh_token:
                 creds.refresh(Request())
             else:
-                flow = InstalledAppFlow.from_client_config(Authentication.USER_CREDENTIALS, Authentication.YOUTUBE_UPLOAD_SCOPE)
+                flow = InstalledAppFlow.from_client_config(Authentication.USER_CREDENTIALS,
+                                                           Authentication.YOUTUBE_UPLOAD_SCOPE)
                 flow.run_local_server(port=8080)
                 flow.authorization_url(access_type='offline')
                 creds = flow.credentials
@@ -56,4 +56,3 @@ class Authentication:
                 return True
 
         return False
-
