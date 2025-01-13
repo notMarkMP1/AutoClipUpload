@@ -16,7 +16,10 @@ class Home(ft.View):
         self.pick_files_dialog.pick_files(allowed_extensions=["mp4", "mkv", "mov", "avi"])
 
     def file_selection_action(self, e: ft.FilePickerResultEvent):
-        print(e.files)
+        if e.files is not None:
+            self.page.go(RouteNames.VIDEO_ROUTE)
+            self.page.update()
+
 
     def __init__(self, page: ft.Page):
         super().__init__()
