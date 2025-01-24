@@ -10,6 +10,9 @@ class Main:
         self.page.on_view_pop = self.view_pop
         self.page.theme = ft.Theme(
             page_transitions=ft.PageTransitionsTheme(windows=ft.PageTransitionTheme.FADE_UPWARDS))
+        self.page.window.width = 1280
+        self.page.window.height = 720
+        self.page.window.resizable = False
         self.page.go("/")
 
     def route_change(self, rt):

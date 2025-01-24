@@ -16,8 +16,8 @@ class VideoOptions(ft.View):
         video_player = ft.Video(
             playlist=media,
             autoplay=True,
-            width=640,
-            height=360
+            aspect_ratio=16/9,
+            expand=True
         )
 
         appbar = ft.AppBar(
@@ -25,8 +25,8 @@ class VideoOptions(ft.View):
             center_title=True
         )
 
-        video_title = ft.TextField(label="Video Title", width=400)
-        video_description = ft.TextField(label="Video Description", width=400, multiline=True)
+        video_title = ft.TextField(label="Video Title", width=400, value=video['name'])
+        video_description = ft.TextField(label="Video Description", width=400, multiline=True, max_lines=10)
 
         video_visibility = ft.Dropdown(
             label="Video Visibility",
@@ -38,30 +38,54 @@ class VideoOptions(ft.View):
             width=400
         )
 
-        modify_button = ft.ElevatedButton("Modify Video")
-        upload_button = ft.ElevatedButton("Upload Video")
+        modify_button = ft.ElevatedButton(
+            text="Modify Video",
+            bgcolor=ft.Colors.BLUE,
+            color=ft.Colors.WHITE,
+            icon=ft.Icons.MOVIE_EDIT
+        )
+        upload_button = ft.ElevatedButton(
+            text="Upload Video",
+            bgcolor=ft.Colors.GREEN,
+            color=ft.Colors.WHITE,
+            icon=ft.Icons.FILE_UPLOAD,
+        )
+
+        video_size_text = ft.Text(
+            value="Video size: " + str(round(video['size']/1000000, 2)) + "MB"
+        )
 
         self.controls = [
             appbar,
-            ft.Row(
+            ft.Column(
                 controls=[
-                    video_player,
-                    ft.Column(
+                    ft.Row(
                         controls=[
-                            video_title,
-                            video_description,
-                            video_visibility,
-                            ft.Row(
-                                controls=[modify_button, upload_button],
+                            video_player,
+                            ft.Column(
+                                controls=[
+                                    video_title,
+                                    video_description,
+                                    video_visibility,
+                                    ft.Row(
+                                        controls=[modify_button, upload_button],
+                                        alignment=ft.MainAxisAlignment.CENTER,
+                                        spacing=20,
+                                        width=400
+                                    ),
+                                    video_size_text
+                                ],
                                 alignment=ft.MainAxisAlignment.CENTER,
+                                horizontal_alignment=ft.CrossAxisAlignment.CENTER,
                                 spacing=20
                             )
                         ],
-                        horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+                        alignment=ft.MainAxisAlignment.CENTER,
                         spacing=20
                     )
                 ],
                 alignment=ft.MainAxisAlignment.CENTER,
-                spacing=20
+                horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+                expand=True
             )
         ]

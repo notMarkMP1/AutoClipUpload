@@ -83,7 +83,8 @@ class Configuration(ft.View):
             width=400,
             border_color=ft.Colors.GREY,
             focused_border_color=ft.Colors.WHITE,
-            value=self.page.client_storage.get("client_id"))
+            value=self.page.client_storage.get("client_id")
+        )
 
         client_secret_textbox = ft.TextField(
             label="Client Secret",
