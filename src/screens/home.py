@@ -16,6 +16,7 @@ class Home(ft.View):
         self.pick_files_dialog.pick_files(allowed_extensions=["mp4", "mkv", "mov", "avi"])
 
     def file_selection_action(self, e: ft.FilePickerResultEvent):
+        # TODO: Check if the user is configured or not
         if e.files is not None:
             self.page.client_storage.set("video", e.files)
             self.page.go(RouteNames.VIDEO_ROUTE)

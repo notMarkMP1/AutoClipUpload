@@ -1,6 +1,12 @@
 import flet as ft
+from src.navigation.route_names import RouteNames
 
 class VideoOptions(ft.View):
+
+    def upload_click(self, e):
+        self.video_player.stop()
+        self.page.go(RouteNames.UPLOAD_ROUTE)
+
     def __init__(self, page: ft.Page):
         super().__init__()
         self.page = page
@@ -13,7 +19,7 @@ class VideoOptions(ft.View):
             )
         ]
 
-        video_player = ft.Video(
+        self.video_player = ft.Video(
             playlist=media,
             autoplay=True,
             aspect_ratio=16/9,
@@ -49,6 +55,7 @@ class VideoOptions(ft.View):
             bgcolor=ft.Colors.GREEN,
             color=ft.Colors.WHITE,
             icon=ft.Icons.FILE_UPLOAD,
+            on_click=self.upload_click
         )
 
         video_size_text = ft.Text(
@@ -61,7 +68,7 @@ class VideoOptions(ft.View):
                 controls=[
                     ft.Row(
                         controls=[
-                            video_player,
+                            self.video_player,
                             ft.Column(
                                 controls=[
                                     video_title,
