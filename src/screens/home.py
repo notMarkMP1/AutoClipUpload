@@ -17,6 +17,7 @@ class Home(ft.View):
 
     def file_selection_action(self, e: ft.FilePickerResultEvent):
         if e.files is not None:
+            self.page.client_storage.set("video", e.files)
             self.page.go(RouteNames.VIDEO_ROUTE)
             self.page.update()
 

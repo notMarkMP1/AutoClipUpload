@@ -6,7 +6,6 @@ from src.navigation.screen_selection import ScreenSelection
 class Main:
     def __init__(self, page: ft.Page):
         self.page = page
-
         self.page.on_route_change = self.route_change
         self.page.on_view_pop = self.view_pop
         self.page.theme = ft.Theme(

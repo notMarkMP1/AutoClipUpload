@@ -1,4 +1,6 @@
 import json
+
+from google.auth.exceptions import RefreshError
 from google.oauth2.credentials import Credentials
 from google.auth.transport.requests import Request
 from google_auth_oauthlib.flow import InstalledAppFlow
@@ -39,7 +41,10 @@ class Authentication:
 
         if not creds or not creds.valid:
             if creds and creds.expired and creds.refresh_token:
-                creds.refresh(Request())
+                try:
+                    creds.refresh(Request())
+                except RefreshError:
+                    return False
             else:
                 flow = InstalledAppFlow.from_client_config(Authentication.USER_CREDENTIALS,
                                                            Authentication.YOUTUBE_UPLOAD_SCOPE)
