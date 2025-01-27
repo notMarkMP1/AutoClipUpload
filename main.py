@@ -19,6 +19,8 @@ class Main:
         if rt.route in ScreenSelection.Screens:
             new_view = ScreenSelection.Screens[rt.route]
             self.page.views.append(new_view(self.page))
+
+
         self.page.update()
 
     def view_pop(self, event):
