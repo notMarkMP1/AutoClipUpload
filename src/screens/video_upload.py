@@ -1,12 +1,14 @@
 import flet as ft
 from src.upload.upload import VideoUploader
-import time
+import asyncio
 
 class VideoUpload(ft.View):
 
-    def begin_upload(self):
+    async def begin_upload(self):
         uploader = VideoUploader(self.page)
-        uploader.test()
+        r = await uploader.test()
+        self.upload_progress_bar.value = r
+        self.page.update()
 
 
     def __init__(self, page: ft.Page):
@@ -30,11 +32,11 @@ class VideoUpload(ft.View):
             center_title=True,
         )
 
-        upload_size_status = ft.Text(
+        self.upload_size_status = ft.Text(
             value="Uploading..."
         )
 
-        upload_progress_bar = ft.ProgressBar(
+        self.upload_progress_bar = ft.ProgressBar(
             value=0.5,
             height=10
         )
@@ -44,12 +46,13 @@ class VideoUpload(ft.View):
             video_player,
             ft.Column(
                 controls=[
-                    upload_size_status,
-                    upload_progress_bar,
+                    self.upload_size_status,
+                    self.upload_progress_bar,
                 ],
                 alignment=ft.MainAxisAlignment.CENTER,
                 horizontal_alignment=ft.CrossAxisAlignment.CENTER,
                 spacing=20,
             )
         ]
-        self.page.update()
+
+        page.run_task(self.begin_upload)

@@ -1,5 +1,7 @@
 from googleapiclient.http import MediaFileUpload
 import flet as ft
+import asyncio
+
 
 class VideoUploader:
 
@@ -26,5 +28,6 @@ class VideoUploader:
     def resumable_upload(self, insert_request):
         return
 
-    def test(self):
-        print(self.page.controls)
+    async def test(self):
+        await asyncio.sleep(3)
+        return 100
