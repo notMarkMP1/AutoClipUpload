@@ -59,7 +59,7 @@ class VideoOptions(ft.View):
         )
 
         video_size_text = ft.Text(
-            value="Video size: " + str(round(video['size']/1000000, 2)) + "MB"
+            value="Video size: " + str(round(video['size']/1000000, 2)) + "MB" # converts bytes to megabytes
         )
 
         self.controls = [

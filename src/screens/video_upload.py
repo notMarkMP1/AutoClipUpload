@@ -33,11 +33,10 @@ class VideoUpload(ft.View):
         )
 
         self.upload_size_status = ft.Text(
-            value="Uploading..."
+            value="Uploading: 0MB / " + str(round(video['size']/1000000, 2)) + "MB" # converts bytes to megabytes
         )
 
         self.upload_progress_bar = ft.ProgressBar(
-            value=0.5,
             height=10
         )
 
