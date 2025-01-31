@@ -34,7 +34,8 @@ class Authentication:
             client_creds = json.loads(client_creds)
             try:
                 creds = Credentials.from_authorized_user_info(client_creds, Authentication.YOUTUBE_UPLOAD_SCOPE)
-            except ValueError:
+            except Exception as error:
+                print(error)
                 return False
             if creds.valid:
                 return True
@@ -43,8 +44,8 @@ class Authentication:
             if creds and creds.expired and creds.refresh_token:
                 try:
                     creds.refresh(Request())
-                except RefreshError:
-                    return False
+                except Exception as error:
+                    print(error)
             else:
                 flow = InstalledAppFlow.from_client_config(Authentication.USER_CREDENTIALS,
                                                            Authentication.YOUTUBE_UPLOAD_SCOPE)
