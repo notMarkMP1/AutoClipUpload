@@ -5,6 +5,9 @@ class VideoOptions(ft.View):
 
     def upload_click(self, e):
         self.video_player.stop()
+        self.page.client_storage.set("video title", self.video_title.value)
+        self.page.client_storage.set("video visibility", self.video_visibility.value)
+        self.page.client_storage.set("video description", self.video_description.value)
         self.page.go(RouteNames.UPLOAD_ROUTE)
 
     def __init__(self, page: ft.Page):
@@ -12,7 +15,6 @@ class VideoOptions(ft.View):
         self.page = page
 
         video = self.page.client_storage.get("video")[0]
-
         media = [
             ft.VideoMedia(
                 video['path']
@@ -31,10 +33,10 @@ class VideoOptions(ft.View):
             center_title=True
         )
 
-        video_title = ft.TextField(label="Video Title", width=400, value=video['name'])
-        video_description = ft.TextField(label="Video Description", width=400, multiline=True, max_lines=10)
+        self.video_title = ft.TextField(label="Video Title", width=400, value=video['name'])
+        self.video_description = ft.TextField(label="Video Description", width=400, multiline=True, max_lines=10)
 
-        video_visibility = ft.Dropdown(
+        self.video_visibility = ft.Dropdown(
             label="Video Visibility",
             options=[
                 ft.dropdown.Option("Public"),
@@ -43,6 +45,8 @@ class VideoOptions(ft.View):
             ],
             width=400
         )
+
+        self.video_visibility.value = page.client_storage.get("video visibility")
 
         modify_button = ft.ElevatedButton(
             text="Modify Video",
@@ -71,9 +75,9 @@ class VideoOptions(ft.View):
                             self.video_player,
                             ft.Column(
                                 controls=[
-                                    video_title,
-                                    video_description,
-                                    video_visibility,
+                                    self.video_title,
+                                    self.video_description,
+                                    self.video_visibility,
                                     ft.Row(
                                         controls=[modify_button, upload_button],
                                         alignment=ft.MainAxisAlignment.CENTER,
