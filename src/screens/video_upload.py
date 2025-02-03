@@ -6,7 +6,7 @@ class VideoUpload(ft.View):
 
     async def begin_upload(self):
         video_uploader = VideoUploader()
-        # r = await video_uploader.test(self.page, self.upload_size_status)
+        # r = await video_uploader.test(self.page, self.upload_size_status, self.upload_progress_bar)
         self.page.update()
         r = await video_uploader.initialize_upload(self.creds, self.options, self.video_size, self.upload_size_status, self.upload_progress_bar, self.page)
         if 'id' in r:

@@ -1,5 +1,4 @@
 from googleapiclient.http import MediaFileUpload
-import flet as ft
 import asyncio
 from googleapiclient.errors import HttpError
 from googleapiclient.discovery import build
@@ -57,9 +56,7 @@ class VideoUploader:
                     await asyncio.sleep(0)
                     progress_bytes = status.progress() * size
                     size_status.value = str("Uploading: " + str(round(progress_bytes / 1000000, 2)) + "MB / " + str(round(size / 1000000, 2)) + "MB")
-                    progress_bar.value = int(status.progress() * 100)
-                    print(progress_bar.value)
-                    print(size_status.value)
+                    progress_bar.value = status.progress()
                     page.update()
                     print("Uploading file:", str(status.progress() * 100) + "%")
                 if response is not None:
@@ -88,9 +85,10 @@ class VideoUploader:
             print("Sleeping %f seconds and then retrying..." % sleep_seconds)
             await asyncio.sleep(sleep_seconds)
 
-    async def test(self, page, upload_size_status):
+    async def test(self, page, upload_size_status, progress_bar):
         await asyncio.sleep(3)
         upload_size_status.value = "3"
+        progress_bar.value = 0.5
         page.update()
         await asyncio.sleep(2)
         print("hi")
