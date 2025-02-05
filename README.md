@@ -25,6 +25,6 @@ Inside the app, copy your Client ID and Client Secret into the configuration tab
 ## TO-DO
 - [ ] Add App Icons
 - [ ] Video modifications (trimming)
-- [ ] Automatically validate credentials before allowing user to upload
+- [X] Automatically validate credentials before allowing user to upload
 - [ ] Back button after video uploads returns to home page
 - [ ] Clean codebase
