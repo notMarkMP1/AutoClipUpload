@@ -21,6 +21,21 @@ class Authentication:
     }
 
     @staticmethod
+    def get_authenticated_service_existing(page):
+        client_creds = page.client_storage.get("client_creds")
+        if client_creds is not None:
+            client_creds = json.loads(client_creds)
+            try:
+                creds = Credentials.from_authorized_user_info(client_creds, Authentication.YOUTUBE_UPLOAD_SCOPE)
+            except Exception as error:
+                print(error)
+                return False
+            if creds.valid:
+                return True
+        return False
+
+
+    @staticmethod
     def get_authenticated_service(page):
         client_id = page.client_storage.get("client_id")
         client_secret = page.client_storage.get("client_secret")

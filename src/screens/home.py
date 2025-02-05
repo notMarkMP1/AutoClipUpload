@@ -1,6 +1,6 @@
 import flet as ft
 from src.navigation.route_names import RouteNames
-
+from src.upload.authentication import Authentication
 
 class Home(ft.View):
 
@@ -16,11 +16,16 @@ class Home(ft.View):
         self.pick_files_dialog.pick_files(allowed_extensions=["mp4", "mkv", "mov", "avi"])
 
     def file_selection_action(self, e: ft.FilePickerResultEvent):
-        # TODO: Check if the user is configured or not
-        if e.files is not None:
+        auth = Authentication()
+        request = auth.get_authenticated_service_existing(self.page)
+
+        if request and e.files is not None:
             self.page.client_storage.set("video", e.files)
             self.page.go(RouteNames.VIDEO_ROUTE)
             self.page.update()
+        else:
+            self.page.open(self.dlg)
+
 
 
     def __init__(self, page: ft.Page):
@@ -60,6 +65,11 @@ class Home(ft.View):
             bgcolor="green",
             color="white",
         )
+
+        self.dlg = ft.AlertDialog(
+            title=ft.Text("Please validate your credentials before uploading videos."),
+        )
+
         self.controls = [
             ft.Column(
                 controls=[
